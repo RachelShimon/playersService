@@ -36,8 +36,5 @@ Optimizations are implemented to ensure efficient data retrieval and processing,
 # Deployment
 The Player Service can be deployed to various hosting platforms or containerized environments using Docker or by deploying the JAR file to a server with Java installed.
 
-#Contributing
-Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
-
 
 
