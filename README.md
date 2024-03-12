@@ -1,6 +1,9 @@
 # Player Service
 The Player Service is a microservice built with Java Spring Boot to serve the contents of a players.csv file through REST API endpoints. It provides two main endpoints to interact with player data.
 
+# Additions/changes to the project
+https://docs.google.com/document/d/1Y__CNgeHqltsbMzoHDsBlQelfcZ-syr4oRyRjhZopY4/edit#heading=h.st6wd2stedx4
+
 # Installation
 To install and run the Player Service, ensure you have Java and Gradle installed on your system.
 
