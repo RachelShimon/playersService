@@ -88,11 +88,11 @@ class PlayersControllerTest {
         when(playerService.getPlayerById("2")).thenReturn(Optional.empty());
 
         // Act
-        ResponseEntity<Optional<Player>> responseEntityFound = playersController.getPlayerById("1");
-        ResponseEntity<Optional<Player>> responseEntityNotFound = playersController.getPlayerById("2");
+        ResponseEntity<Player> responseEntityFound = playersController.getPlayerById("1");
+        ResponseEntity<Player> responseEntityNotFound = playersController.getPlayerById("2");
 
         // Assert
-        assertEquals(player, Objects.requireNonNull(responseEntityFound.getBody()).get());
+        assertEquals(player, Objects.requireNonNull(responseEntityFound.getBody()));
         assertEquals(200, responseEntityFound.getStatusCode().value());
         assertEquals(404, responseEntityNotFound.getStatusCode().value());
 

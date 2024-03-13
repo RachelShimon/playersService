@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -47,16 +46,13 @@ public class PlayersController {
      */
     @GetMapping("/{playerId}")
     @Operation(summary = "Get player by ID")
-    public ResponseEntity<Optional<Player>> getPlayerById(@PathVariable String playerId) {
+    public ResponseEntity<Player> getPlayerById(@PathVariable String playerId) {
         if (StringUtils.isBlank(playerId)) {
             throw new InvalidRequestException("Player ID must be provided");
         }
-        Optional<Player> player = playerService.getPlayerById(playerId);
-        if (player.isPresent()) {
-            return ResponseEntity.ok(player);
-        } else {
-            throw new PlayerNotFoundException(playerId);
-        }
+
+        return ResponseEntity.ok(playerService.getPlayerById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId)));
     }
 }
 
