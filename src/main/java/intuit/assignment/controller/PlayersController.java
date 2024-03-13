@@ -1,12 +1,12 @@
 package intuit.assignment.controller;
 
-
 import intuit.assignment.entities.Player;
 import intuit.assignment.exception.InvalidRequestException;
 import intuit.assignment.exception.PlayerNotFoundException;
 import intuit.assignment.services.IPlayerService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +48,7 @@ public class PlayersController {
     @GetMapping("/{playerId}")
     @Operation(summary = "Get player by ID")
     public ResponseEntity<Optional<Player>> getPlayerById(@PathVariable String playerId) {
-        if (playerId == null || playerId.isEmpty()) {
+        if (StringUtils.isBlank(playerId)) {
             throw new InvalidRequestException("Player ID must be provided");
         }
         Optional<Player> player = playerService.getPlayerById(playerId);
