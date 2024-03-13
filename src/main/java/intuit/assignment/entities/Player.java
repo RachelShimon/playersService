@@ -3,14 +3,16 @@ package intuit.assignment.entities;
 import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Represents a baseball player.
+ * Represents a player.
  */
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Player {
     @CsvBindByName
@@ -84,9 +86,5 @@ public class Player {
 
     @CsvBindByName
     private String bbrefID;
-
-    public Player(){
-        // Default constructor for CSV parsing library
-    }
 
 }

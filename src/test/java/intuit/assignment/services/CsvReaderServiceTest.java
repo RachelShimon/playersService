@@ -54,16 +54,13 @@ class CsvReaderServiceTest {
      */
 
     @Test
-    void testRead() throws IOException {
-        // Arrange
+    void givenMockCsvRowsCountWhenCsvReaderServiceReadThenReadARows() throws IOException {
         when(resourceLoader.getResource(anyString())).thenReturn(resource);
-        when(csvToBean.parse()).thenReturn(Collections.emptyList());
 
         long csvRows = countRows();
-        // Act
+
         List<Player> players = csvReaderService.read();
 
-        // Assert
         assertNotNull(players);
         assertEquals(csvRows-1,players.size());
 
