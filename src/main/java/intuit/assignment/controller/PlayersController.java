@@ -2,6 +2,8 @@ package intuit.assignment.controller;
 
 
 import intuit.assignment.entities.Player;
+import intuit.assignment.exception.InvalidRequestException;
+import intuit.assignment.exception.PlayerNotFoundException;
 import intuit.assignment.services.IPlayerService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,11 @@ public class PlayersController {
     @Operation(summary = "Get all players")
     public ResponseEntity<List<Player>> getAllPlayers() {
         List<Player> players = playerService.getAllPlayers();
-        return ResponseEntity.ok(players);
+        if (players.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(players);
+        }
     }
 
     /**
@@ -42,11 +48,14 @@ public class PlayersController {
     @GetMapping("/{playerId}")
     @Operation(summary = "Get player by ID")
     public ResponseEntity<Optional<Player>> getPlayerById(@PathVariable String playerId) {
+        if (playerId == null || playerId.isEmpty()) {
+            throw new InvalidRequestException("Player ID must be provided");
+        }
         Optional<Player> player = playerService.getPlayerById(playerId);
         if (player.isPresent()) {
             return ResponseEntity.ok(player);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new PlayerNotFoundException(playerId);
         }
     }
 }
