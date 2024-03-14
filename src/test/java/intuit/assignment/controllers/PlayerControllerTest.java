@@ -2,6 +2,7 @@ package intuit.assignment.controllers;
 
 import intuit.assignment.controller.PlayersController;
 import intuit.assignment.entities.Player;
+import intuit.assignment.exception.PlayerNotFoundException;
 import intuit.assignment.services.IPlayerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class PlayersControllerTest {
@@ -59,14 +61,12 @@ class PlayersControllerTest {
      * Test case to verify the retrieval of all players.
      */
     @Test
-    void testGetAllPlayers() {
+    void givenListPlayerMockWhenCallGetAllPlayersThenAllPlayersWillReturn() {
 
         when(playerService.getAllPlayers()).thenReturn(players);
 
-        // Act
         ResponseEntity<List<Player>> responseEntity = playersController.getAllPlayers();
 
-        // Assert
         assertEquals(2, Objects.requireNonNull(responseEntity.getBody()).size());
         assertEquals(players, responseEntity.getBody());
         assertEquals(200, responseEntity.getStatusCode().value());
@@ -79,24 +79,29 @@ class PlayersControllerTest {
      * Test case to verify the retrieval of a player by ID.
      */
     @Test
-    void testGetPlayerById() {
-        // Arrange
+    void givenMockPlayerWhenCallGetByIDThenReturnTheActualPlayer() {
+
         Player player = player1;
         Optional<Player> optionalPlayer = Optional.of(player);
 
         when(playerService.getPlayerById("1")).thenReturn(optionalPlayer);
-        when(playerService.getPlayerById("2")).thenReturn(Optional.empty());
 
-        // Act
         ResponseEntity<Player> responseEntityFound = playersController.getPlayerById("1");
-        ResponseEntity<Player> responseEntityNotFound = playersController.getPlayerById("2");
 
-        // Assert
         assertEquals(player, Objects.requireNonNull(responseEntityFound.getBody()));
         assertEquals(200, responseEntityFound.getStatusCode().value());
-        assertEquals(404, responseEntityNotFound.getStatusCode().value());
 
         verify(playerService, times(1)).getPlayerById("1");
+        verifyNoMoreInteractions(playerService);
+    }
+
+    @Test
+    void givenMockPlayerWhenCallGetByIDWithIDNotExistThenThrowsPlayerNotFoundException() {
+
+        when(playerService.getPlayerById("2")).thenReturn(Optional.empty());
+
+        assertThrows(PlayerNotFoundException.class,()->playersController.getPlayerById("2"));
+
         verify(playerService, times(1)).getPlayerById("2");
         verifyNoMoreInteractions(playerService);
     }
