@@ -72,7 +72,7 @@ public class Player {
     @CsvBindByName
     private String bats;
 
-    @CsvBindByName
+    @CsvBindByName(column = "throws")
     private String throwsType;
 
     @CsvBindByName
